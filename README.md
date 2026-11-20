@@ -436,4 +436,5 @@ endpoint, login, catalogue and an upload.
 - Prescription images are processed by a third-party AI service (Groq). Use only synthetic or
   consented documents in demonstrations.
 #   m e d i c a r t  
+ #   m e d i c a r t  
  
