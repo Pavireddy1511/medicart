@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-brand-50: #f8f6fc;
+  --color-brand-100: #eee7fa;
+  --color-brand-200: #ddd0f3;
+  --color-brand-300: #c3abe9;
+  --color-brand-400: #9d79d4;
+  --color-brand-500: #7047b9;
+  --color-brand-600: #5f3aa1;
+  --color-brand-700: #4d2f84;
+  --color-brand-800: #3d2568;
+  --color-brand-900: #302044;
+
+  --color-ink: #302044;
+  --color-muted: #6b6480;
+  --color-line: #e6e0f1;
+  --color-surface: #f8f6fc;
+
+  --shadow-card: 0 1px 2px rgba(48, 32, 68, 0.06), 0 4px 16px rgba(48, 32, 68, 0.06);
+  --shadow-pop: 0 8px 30px rgba(48, 32, 68, 0.16);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-ink antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  ::selection {
+    background: #ddd0f3;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #c3abe9 transparent;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker 32s linear infinite;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.toast-enter {
+  animation: toast-in 180ms ease-out;
+}

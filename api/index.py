@@ -1,0 +1,13 @@
+"""Vercel entrypoint. The FastAPI code lives in backend/app and uses `app.*` imports,
+so the backend folder is put on sys.path before importing it."""
+
+import sys
+from pathlib import Path
+
+BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
+from app.main import app  # noqa: E402
+
+__all__ = ["app"]
