@@ -1,4 +1,16 @@
-﻿FROM python:3.12-slim
+# Build React frontend
+FROM node:22-alpine AS frontend-build
+
+WORKDIR /frontend
+
+COPY frontend/package*.json ./
+RUN npm ci
+
+COPY frontend/ .
+RUN npm run build
+
+# Backend and web server
+FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -10,15 +22,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
     libxcb1 \
     libgl1 \
+    nginx \
     && rm -rf /var/lib/apt/lists/*
 
 COPY backend/requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ .
 
-EXPOSE 8000
+# Include built frontend
+COPY --from=frontend-build /frontend/dist /usr/share/nginx/html
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Add web server configuration and startup script
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY start.sh /start.sh
 
+RUN rm -f /etc/nginx/sites-enabled/default \
+    && sed -i 's/\r$//' /start.sh \
+    && chmod +x /start.sh
+
+EXPOSE 10000
+
+CMD ["/start.sh"]
